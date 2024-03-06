@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
+
 import logo from '../../assets/argentBankLogo.webp';
+import IconUser from "../../assets/icon-user.webp";
 
 function Header() {
     return (
@@ -12,10 +14,12 @@ function Header() {
                 />
             </NavLink>
             <div>
-                <a className="main-nav-item" href="./sign-in.html">
-                    <i className="fa fa-user-circle"></i>
-                    Sign In
-                </a>
+                <NavLink to={`/login`} className="main-nav-item">
+                    <img src={IconUser}
+                        alt="icon-user"
+                        className="sign-in-icon" />
+                    Sign In{" "}
+                </NavLink>
             </div>
         </nav >
     )

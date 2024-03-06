@@ -1,28 +1,82 @@
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadToken } from '../../store/Actions/TokenAction';
+
+import { useNavigate } from 'react-router-dom';
+
 function Login() {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        rememberMe: false,
+    });
+
+    const { email, password, rememberMe } = formData;
+    const token = useSelector((state) => state.token.tokenTrue);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        localStorage.setItem('email', rememberMe ? email : '');
+        await dispatch(loadToken(email, password, navigate));
+    };
+
+    const handleChange = (event) => {
+        const { name, value, type, checked } = event.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: type === 'checkbox' ? checked : value,
+        }));
+    };
+
     return (
-        <section className="sign-in-content">
-            <i className="fa fa-user-circle sign-in-icon"></i>
-            <h1>Sign In</h1>
-            <form>
-                <div className="input-wrapper">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" />
-                </div>
-                <div className="input-wrapper">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" />
-                </div>
-                <div className="input-remember">
-                    <input type="checkbox" id="remember-me" />
-                    <label for="remember-me">Remember me</label>
-                </div>
-                {/* <!-- PLACEHOLDER DUE TO STATIC SITE -->
-                <a href="./user.html" className="sign-in-button">Sign In</a>
-                <!-- SHOULD BE THE BUTTON BELOW -->
-                <!-- <button className="sign-in-button">Sign In</button> -->
-                <!--  --> */}
-            </form>
-        </section>
+        <main className="main bg-dark">
+            <div className="sign-in-wrapper">
+                <section className="sign-in-content">
+                    <h1>Sign In</h1>
+                    <form onSubmit={handleSubmit}>
+                        <div className="input-wrapper">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                type="text"
+                                id="email"
+                                name="email"
+                                value={email}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="input-wrapper">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                value={password}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className="input-remember">
+                            <input
+                                type="checkbox"
+                                id="remember-me"
+                                name="rememberMe"
+                                checked={rememberMe}
+                                onChange={handleChange}
+                            />
+                            <label htmlFor="remember-me">Remember me</label>
+                        </div>
+                        {token === false && (
+                            <p className="error-message">Email or password invalid</p>
+                        )}
+                        <button type="submit" className="sign-in-button">
+                            Sign In
+                        </button>
+                    </form>
+                </section>
+            </div>
+        </main>
     );
 }
 

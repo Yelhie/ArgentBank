@@ -1,4 +1,4 @@
-# Argent Bank API
+# Argent Bank
 
 This codebase contains the code needed to run the backend and frontend for Argent Bank.
 

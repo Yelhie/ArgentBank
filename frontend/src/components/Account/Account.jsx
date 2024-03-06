@@ -1,4 +1,4 @@
-function Feature() {
+function Account() {
     return (
         <section className="account">
             <div className="account-content-wrapper">
@@ -13,4 +13,4 @@ function Feature() {
     );
 }
 
-export default Feature;
+export default Account;
