@@ -1,7 +1,25 @@
-import { NavLink } from "react-router-dom";
-import logo from '../../assets/argentBankLogo.webp';
+import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from "../../store/Actions/UserAction";
 
-function Header() {
+import logo from '../../assets/argentBankLogo.webp';
+import IconUser from "../../assets/icon-user.webp";
+import IconLogOut from "../../assets/icon-logout.webp";
+
+const Header = () => {
+    const selectToken = (state) => state.token.token;
+    const token = useSelector(selectToken);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const selectUser = (state) => state.user.user.body
+    const user = useSelector(selectUser)
+    const userName = user?.userName ?? 'Profile';
+
+    const logoutUser = () => {
+        dispatch(logout());
+        navigate('/');
+    };
+
     return (
         <nav className="main-nav">
             <NavLink className="main-nav-logo" to={`/`}>
@@ -12,13 +30,32 @@ function Header() {
                 />
             </NavLink>
             <div>
-                <a className="main-nav-item" href="./sign-in.html">
-                    <i className="fa fa-user-circle"></i>
-                    Sign In
-                </a>
+                {token ? (
+                    <div className="main-nav-item">
+                        <NavLink to="/user" className="user-profile">
+                            <img src={IconUser}
+                                alt="Icon User"
+                                className="sign-in-icon" />{" "}
+                            {userName}
+                        </NavLink>
+                        <div onClick={logoutUser} className="logout main-nav-link">
+                            <img src={IconLogOut}
+                                alt="icon-logout"
+                                className="icon-logout" />
+                            Sign Out
+                        </div>
+                    </div>
+                ) : (
+                    <NavLink to={`/login`} className="main-nav-item">
+                        <img src={IconUser}
+                            alt="icon-user"
+                            className="sign-in-icon" />
+                        Sign In{" "}
+                    </NavLink>
+                )}
             </div>
-        </nav >
-    )
+        </nav>
+    );
 }
 
 export default Header;
