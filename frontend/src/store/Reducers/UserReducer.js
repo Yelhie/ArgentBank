@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { getUserSuccess, getUserError, logout } from '../Actions/UserAction';
+import { getUserSuccess, getUserError, logout, editUser, editUserSuccess, editUserError  } from '../Actions/UserAction';
 
 //état initial du reducer
 const initialStateUser = {
@@ -22,4 +22,20 @@ export const getUserReducer = createReducer(initialStateUser, (builder) => {
   }));
 
   builder.addCase(logout, () => initialStateUser);
+
+  builder.addCase(editUser, (state) => {
+    state.isLoading = true;
+  });
+
+  builder.addCase(editUserSuccess, (state, action) => {
+    state.isLoading = false;
+    state.user = action.payload;
+    state.error = '';
+  });
+
+  builder.addCase(editUserError, (state, action) => {
+    state.isLoading = false;
+    state.user = {};
+    state.error = action.payload;
+  });
 });
