@@ -10,14 +10,17 @@ function UserDetails() {
 
     const selectUser = (state) => state.user.user.body
     const user = useSelector(selectUser)
-    const [userName, setUserName] = useState(user.userName)
+    const [userName, setUserName] = useState(user ? user.userName : '');
     const navigate = useNavigate();
     const [editName, setEditName] = useState(false)
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setUserName(user.userName);
-    }, [user.userName]);
+        if (!user) {
+            navigate('/login');
+        }
+    }, [user, navigate]);
+
 
     const handleUserNameChange = (event) => {
         setUserName(event.target.value);
@@ -30,12 +33,12 @@ function UserDetails() {
     };
 
     const handleCancel = () => {
-        setEditName(false)
-        setUserName(user.userName)
+        setEditName(false);
+        setUserName(user ? user.userName : '');
     };
 
     if (!user) {
-        return navigate('/');
+        return null;
     }
 
     return (

@@ -17,6 +17,8 @@ const Header = () => {
 
     const logoutUser = () => {
         dispatch(logout());
+        localStorage.removeItem('token');
+        localStorage.removeItem('email');
         navigate('/');
     };
 
@@ -31,7 +33,7 @@ const Header = () => {
             </NavLink>
             <div>
                 {token ? (
-                    <div className="main-nav-item">
+                    <div className="main-nav-link">
                         <NavLink to="/user" className="user-profile">
                             <img src={IconUser}
                                 alt="Icon User"
@@ -46,7 +48,7 @@ const Header = () => {
                         </div>
                     </div>
                 ) : (
-                    <NavLink to={`/login`} className="main-nav-item">
+                    <NavLink to={`/login`} className="main-nav-link">
                         <img src={IconUser}
                             alt="icon-user"
                             className="sign-in-icon" />
