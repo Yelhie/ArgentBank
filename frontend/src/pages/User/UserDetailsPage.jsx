@@ -51,8 +51,11 @@ function UserDetails() {
                 </h1>
                 {editName ? (
                     <form className="edit-wrapper" onSubmit={handleSubmit}>
+                        <p>Edit user info</p>
                         <div className="edit-form-inputs">
-                            <input type="text" value={userName} onChange={handleUserNameChange} />
+                            <label htmlFor="input-label">Username</label><input type="text" for label="User Name :" value={userName} onChange={handleUserNameChange} />
+                            <label htmlFor="input-label">First name</label><input type="text" label="First Name :" value={user.firstName} disabled />
+                            <label htmlFor="input-label">Last Name</label> <input type="text" label="Last Name :" value={user.lastName} disabled />
                         </div>
                         <div className="form-buttons">
                             <button type="submit" className="edit-button">Save</button>

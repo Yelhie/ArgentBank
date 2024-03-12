@@ -70,10 +70,6 @@ body {
     padding: 3px;
 }
 
-.main-nav-link:hover {
-    text-decoration: underline;
-}
-
 .main-nav-logo {
     display: flex;
     align-items: center;
@@ -228,13 +224,6 @@ body {
     font-size: 1.2rem;
 }
 
-.edit-input-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-
 .edit-wrapper {
     padding-top: 20px;
     display: flex;
@@ -244,14 +233,10 @@ body {
 }
 
 .edit-form-inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    gap: 5px;
     padding-bottom: 20px;
-}
-
-.input-field {
-    height: 25px;
 }
 
 .error-message {
