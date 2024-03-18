@@ -1,25 +1,26 @@
 # Argent Bank
 
-This codebase contains the code needed to run the backend and frontend for Argent Bank.
+Cette base de code contient le code nécessaire pour exécuter le backend et le frontend d'ArgentBank.
 
 ### Instructions
 
-1. Run the following commands in the backend folder
+1. Exécutez les commandes suivantes dans le dossier backend
 
 ```bash
-# Install dependencies in the backend folder
+# Installer les dépendances dans le dossier backend
 npm install
 
-# Start local dev server
+# Démarrer le serveur local
 npm run dev:server
 
 ```
-2. Run the following commands in the frontend folder
+
+2. Exécutez les commandes suivantes dans le dossier frontend
 
 ```bash
-# Install dependencies in the frontend folder
+# Installer les dépendances dans le dossier frontend
 npm install
 
-# Start FrontEnd
+# démarrer le frontend
 npm start
 ```
