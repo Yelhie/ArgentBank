@@ -9,36 +9,34 @@ basePath: /api/v1
 schemes:
   - http
 paths:
-  # Récupération du compte bancaire
-  /user/account/{accountId}:
+  # Récupération des comptes bancaires de l'utilisateur
+  /user/accounts:
     get:
       tags:
         - User Transactions
-      summary: Récupére un compte bancaire par ID
+      summary: Récupère tous les comptes bancaires de l'utilisateur
       security:
         - Bearer: []
-      parameters:
-        - in: path
-          name: accountId
-          description: ID du compte
-          type: integer
-          required: true
       responses:
         200:
-          description: Compte récupéré avec succès
+          description: Comptes récupérés avec succès
           schema:
             $ref: "#/definitions/AccountsResponse"
-        400:
-          description: Champs invalides
+        401:
+          description: Une authentification est nécessaire pour accéder à la ressource
+        403:
+          description: Vous n'avez pas les autorisations nécessaires pour accéder à ce compte.
+        404:
+          description: Compte non trouvé
         500:
           description: Erreur interne du serveur
 
-  # Récupération la liste des transactions d'un compte en fonction de l'ID du compte
+  # Récupération, par date de la liste des transactions d'un compte
   /account/{accountId}/transactions:
     get:
       tags:
         - User Transactions
-      summary: Récupérer la liste des transactions d'un compte bancaire par ID
+      summary: Récupérer la liste des transactions d'un compte bancaire par dates
       security:
         - Bearer: []
       parameters:
@@ -64,8 +62,12 @@ paths:
             type: array
             items:
               $ref: "#/definitions/TransactionsResponse"
+        401:
+          description: Authentification requise pour accéder à la ressource.
+        403:
+          description: Vous n'avez pas les autorisations nécessaires pour accéder à la ressource.
         404:
-          description: Compte non trouvé
+          description: transactions non trouvé
         500:
           description: Erreur interne du serveur
 
@@ -93,17 +95,21 @@ paths:
           description: Transactions récupérées avec succès
           schema:
             $ref: "#/definitions/TransactionsResponse"
+        401:
+          description: Authentification requise pour accéder à la ressource.
+        403:
+          description: Vous n'avez pas les autorisations nécessaires pour accéder à la ressource.
         404:
-          description: Échec de la récupération de la transaction
+          description: transactions non trouvé
         500:
           description: Erreur interne du serveur
 
   # Maj de la catégorie
   /transactions/{transactionId}/category:
-    put:
+    patch:
       tags:
         - User Transactions
-      summary: Mettre à jour la catégorie d'une transaction par ID
+      summary: Modifier la catégorie d'une transaction
       security:
         - Bearer: []
       parameters:
@@ -123,47 +129,21 @@ paths:
           description: La catégorie de la transaction a été modifiée avec succès
           schema:
             $ref: "#/definitions/TransactionCategory"
+        401:
+          description: Authentification requise pour accéder à la ressource.
+        403:
+          description: Vous n'avez pas les autorisations nécessaires pour accéder à la ressource.
         404:
           description: Transaction non trouvée
         500:
           description: Erreur interne du serveur
 
-  # Ajout de la note
-  /transactions/{transactionId}/note:
-    post:
-      tags:
-        - User Transactions
-      summary: Ajouter une note à une transaction par ID
-      security:
-        - Bearer: []
-      parameters:
-        - in: path
-          name: transactionId
-          description: ID de la transaction
-          required: true
-          type: integer
-        - in: body
-          name: note
-          description: Nouvelle note de transaction
-          required: true
-          schema:
-            $ref: "#/definitions/TransactionNote"
-      responses:
-        200:
-          description: Note ajoutée avec succès
-          schema:
-            $ref: "#/definitions/TransactionResponseNote"
-        404:
-          description: Note non créée
-        500:
-          description: Erreur interne du serveur
-
   # Maj de la note
-  /transactions/{transactionId}/note/{noteId}:
-    put:
+  /transactions/{transactionId}/note:
+    patch:
       tags:
         - User Transactions
-      summary: Mettre à jour une note d'une transaction par ID et note ID
+      summary: Modifier une note d'une transaction
       security:
         - Bearer: []
       parameters:
@@ -172,11 +152,6 @@ paths:
           description: ID de la transaction
           required: true
           type: integer
-        - in: path
-          name: noteId
-          description: ID de la note
-          required: true
-          type: string
         - in: body
           name: note
           description: Modifier la note de la transaction
@@ -188,6 +163,10 @@ paths:
           description: Note modifiée avec succès
           schema:
             $ref: "#/definitions/TransactionResponseNote"
+        401:
+          description: Authentification requise pour accéder à la ressource.
+        403:
+          description: Vous n'avez pas les autorisations nécessaires pour accéder à la ressource.
         404:
           description: Échec de la modification de la note
         500:
@@ -203,32 +182,28 @@ definitions:
   AccountsResponse:
     type: object
     properties:
-      status:
-        type: integer
-      message:
+      accountID:
         type: string
-      body:
-        type: array
-        items:
-          $ref: "#/definitions/Account"
-  Account:
-    type: object
-    properties:
-      id:
-        type: integer
-      name:
+        description: ID du compte
+      accountName:
         type: string
-      currency:
+        description: nom du compte
+      accountCurrency:
         type: string
-      balance:
+        description: devise du compte
+      currentBalance:
         type: number
+        description: solde du compte courant
+        format: double
   TransactionsResponse:
     type: object
     properties:
       transactionId:
         type: integer
+        description: ID de la transation
       transactionType:
         type: string
+        description: Type de la transation
       date:
         type: string
         format: date-time

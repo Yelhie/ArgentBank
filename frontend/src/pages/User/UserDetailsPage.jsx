@@ -8,7 +8,7 @@ import { EditUser } from "../../store/Actions/UserAction";
 
 function UserDetails() {
   const selectUser = (state) => state.user.user.body;
-  const user = useSelector(selectUser);
+  const user = useSelector(selectUser); //utilisation de useSelector pour extraire les données de l'utilisateur du store
   const [userName, setUserName] = useState(user ? user.userName : "");
   const navigate = useNavigate();
   const [editName, setEditName] = useState(false);
@@ -25,8 +25,8 @@ function UserDetails() {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(EditUser(userName));
+    event.preventDefault(); //empêche le rechargement de la page HTML
+    dispatch(EditUser(userName)); //envoie de l'action EditUser au store
     setEditName(false);
   };
 
