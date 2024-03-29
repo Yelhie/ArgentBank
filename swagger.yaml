@@ -24,15 +24,13 @@ paths:
             $ref: "#/definitions/AccountsResponse"
         401:
           description: Une authentification est nécessaire pour accéder à la ressource
-        403:
-          description: Vous n'avez pas les autorisations nécessaires pour accéder à ce compte.
         404:
           description: Compte non trouvé
         500:
           description: Erreur interne du serveur
 
   # Récupération, par date de la liste des transactions d'un compte
-  /account/{accountId}/transactions:
+  /account/{accountId}/transactions/{year}/{month}:
     get:
       tags:
         - User Transactions
@@ -45,16 +43,18 @@ paths:
           description: ID du compte
           required: true
           type: integer
-        - name: fromDate
-          in: query
-          description: Date de début de la transaction
-          required: false
-          type: string
-        - name: toDate
-          in: query
-          description: Date de fin de la transaction
-          required: false
-          type: string
+        - name: year
+          in: path
+          description: >
+            Année des transactions. Format : YYYY. Exemple : 2024
+          required: true
+          type: integer
+        - name: month
+          in: path
+          description: >
+            Mois des transactions. Format : MM (01 pour janvier, 02 pour février, etc.). Exemple : 03 pour mars.
+          required: true
+          type: integer
       responses:
         200:
           description: Transactions récupérées avec succès
@@ -64,8 +64,6 @@ paths:
               $ref: "#/definitions/TransactionsResponse"
         401:
           description: Authentification requise pour accéder à la ressource.
-        403:
-          description: Vous n'avez pas les autorisations nécessaires pour accéder à la ressource.
         404:
           description: transactions non trouvé
         500:
@@ -97,19 +95,17 @@ paths:
             $ref: "#/definitions/TransactionsResponse"
         401:
           description: Authentification requise pour accéder à la ressource.
-        403:
-          description: Vous n'avez pas les autorisations nécessaires pour accéder à la ressource.
         404:
           description: transactions non trouvé
         500:
           description: Erreur interne du serveur
 
-  # Maj de la catégorie
-  /transactions/{transactionId}/category:
+  # Mise à jour de la note et/ou de la catégorie d'une transaction
+  /transactions/{transactionId}:
     patch:
       tags:
         - User Transactions
-      summary: Modifier la catégorie d'une transaction
+      summary: Modifier la note et/ou la catégorie d'une transaction
       security:
         - Bearer: []
       parameters:
@@ -119,56 +115,22 @@ paths:
           required: true
           type: integer
         - in: body
-          name: category
-          description: Modifier la catégorie d'une transaction
+          name: transactionUpdate
+          description: Données de mise à jour de la transaction
           required: true
           schema:
-            $ref: "#/definitions/TransactionCategory"
+            $ref: "#/definitions/TransactionUpdate"
       responses:
         200:
-          description: La catégorie de la transaction a été modifiée avec succès
+          description: Modification réalisé avec succées
           schema:
-            $ref: "#/definitions/TransactionCategory"
+            $ref: "#/definitions/TransactionsResponse"
         401:
           description: Authentification requise pour accéder à la ressource.
         403:
           description: Vous n'avez pas les autorisations nécessaires pour accéder à la ressource.
         404:
           description: Transaction non trouvée
-        500:
-          description: Erreur interne du serveur
-
-  # Maj de la note
-  /transactions/{transactionId}/note:
-    patch:
-      tags:
-        - User Transactions
-      summary: Modifier une note d'une transaction
-      security:
-        - Bearer: []
-      parameters:
-        - in: path
-          name: transactionId
-          description: ID de la transaction
-          required: true
-          type: integer
-        - in: body
-          name: note
-          description: Modifier la note de la transaction
-          required: true
-          schema:
-            $ref: "#/definitions/TransactionNote"
-      responses:
-        200:
-          description: Note modifiée avec succès
-          schema:
-            $ref: "#/definitions/TransactionResponseNote"
-        401:
-          description: Authentification requise pour accéder à la ressource.
-        403:
-          description: Vous n'avez pas les autorisations nécessaires pour accéder à la ressource.
-        404:
-          description: Échec de la modification de la note
         500:
           description: Erreur interne du serveur
 
@@ -200,36 +162,33 @@ definitions:
     properties:
       transactionId:
         type: integer
-        description: ID de la transation
+        description: ID de la transaction
       transactionType:
         type: string
-        description: Type de la transation
+        description: Type de la transaction
       date:
         type: string
         format: date-time
+        description: Date de la transaction
       amount:
         type: number
+        description: Montant de la transaction
       balance:
         type: number
         format: double
+        description: Solde après la transaction
       category:
         type: string
+        description: Catégorie de la transaction
       note:
         type: string
-  TransactionCategory:
+        description: Note de la transaction
+  TransactionUpdate:
     type: object
     properties:
+      note:
+        type: string
+        description: Nouvelle note de la transaction
       category:
         type: string
-  TransactionNote:
-    type: object
-    properties:
-      note:
-        type: string
-  TransactionResponseNote:
-    type: object
-    properties:
-      note:
-        type: string
-      noteID:
-        type: string
+        description: Nouvelle catégorie de la transaction
