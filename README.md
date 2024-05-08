@@ -32,20 +32,38 @@ npm install
 npm start
 ```
 
+3. Login
+
+- Email: `tony@stark.com`
+- Password: `password123`
+
+- Email: `steve@rogers.com`,
+- Password: `password456`
+
+## Stack Technique
+
+**Client:**
+
+- Vite
+- React
+- Redux
+- React Router Dom
+
+**Server:**
+
+- Node.js
+- MongoDB
+
 ## Screenshots
 
 **Home page**
 
 ![ArgentBank home page](https://github.com/Yelhie/xi5ftcai605u/blob/master/img/argentbank_24140917.jpg)
 
-**Page logement**
+**Page login**
 
-![ArgentBank page login](https://github.com/Yelhie/xi5ftcai605u/blob/master/img/argentbank_2420140801.jpg)
+![ArgentBank page login](https://github.com/Yelhie/xi5ftcai605u/blob/master/img/argentbank_24140801.jpg)
 
-**Page logement**
+**Page account**
 
 ![ArgentBank page account](https://github.com/Yelhie/xi5ftcai605u/blob/master/img/argentbank_24140719.jpg)
-
-## Tech Stack
-
-**Client:** Vite, React, Redux, React Router Dom.
