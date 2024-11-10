@@ -42,17 +42,13 @@ npm start
 
 ## Stack Technique
 
-**Client:**
+| Backend | Frontend | Base de données | Documentation API et Test |
+|:-------:|:--------:|:---------------:|:-------------------------:|
+| Node.js |   Vite   |                 |                   |
+| MongoDB |  React   |               |                     |
+|         |  Redux   |               |                     |
+|         |  React Router Dom  |               |                     |
 
-- Vite
-- React
-- Redux
-- React Router Dom
-
-**Server:**
-
-- Node.js
-- MongoDB
 
 ## Screenshots
 
